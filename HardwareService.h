@@ -1,8 +1,7 @@
-#ifndef HARDWARESERVICE_H
-#define HARDWARESERVICE_H
+#pragma once
 
 #include "Stream.h"
-
+#include "ArduinoLogger.h"
   
 /**
  * We virtualize the hardware and send the requests and replys over
@@ -131,45 +130,66 @@ class HardwareService {
 
     HWCalls receiveCmd(){
         uint16_t result;
-        io->readBytes((char*)&result, sizeof(uint16_t));
+        size_t len =  io->readBytes((char*)&result, sizeof(uint16_t));
+        if (len!=sizeof(uint16_t) && len!=0){
+            Logger.log(Error,"receiveCmd","Could not read all data");
+        }
+        
         return (HWCalls)swap_uint16(result);
     }
 
     uint8_t receivePin(){
         return receive8();
     }
+
+    uint8_t receive8(){
+        uint8_t result;
+        size_t len = io->readBytes((char*)&result, sizeof(uint8_t));
+        if (len!=sizeof(uint8_t)){
+            Logger.log(Error,"receive8","Could not read all data");
+        }
+        return result;
+    }
+    
     
     uint16_t receive16(){
         uint16_t result;
-        io->readBytes((char*)&result, sizeof(uint16_t));
+        size_t len = io->readBytes((char*)&result, sizeof(uint16_t));
+        if (len!=sizeof(uint16_t)){
+            Logger.log(Error,"receive16","Could not read all data");
+        }
         return swap_uint16(result);
     }
 
     uint32_t receive32(){
         uint16_t result;
-        io->readBytes((char*)&result, sizeof(uint32_t));
+        size_t len = io->readBytes((char*)&result, sizeof(uint32_t));
+        if (len!=sizeof(uint32_t)){
+            Logger.log(Error,"receive32","Could not read all data");
+        }
         return swap_uint32(result);
     }
     
     uint64_t receive64(){
         uint16_t result;
-        io->readBytes((char*)&result, sizeof(uint64_t));
+        size_t len = io->readBytes((char*)&result, sizeof(uint64_t));
+        if (len!=sizeof(uint64_t)){
+            Logger.log(Error,"receive64","Could not read all data");
+        }
         return swap_uint64(result);
     }
 
     int receiveInt(){
         int64_t result;
-        io->readBytes((char*)&result, sizeof(int64_t));
+        size_t len = io->readBytes((char*)&result, sizeof(int64_t));
+        if (len!=sizeof(int64_t)){
+            Logger.log(Error,"receiveInt","Could not read all data");
+        }
         return swap_int64(result);
     }
     
-    uint8_t receive8(){
-        uint8_t result;
-        io->readBytes((char*)&result, sizeof(uint8_t));
-        return result;
-    }
-    
-    uint16_t receive(void* data, int len){
+
+    size_t receive(void* data, int len){
         return io->readBytes((char*)data,len);
     }
    
@@ -229,7 +249,3 @@ class HardwareService {
     }
  
 };
-
-
-
-#endif

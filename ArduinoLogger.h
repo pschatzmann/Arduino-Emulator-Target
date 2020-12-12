@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * A simple Logger which supports the output to a stream and log levels
  */

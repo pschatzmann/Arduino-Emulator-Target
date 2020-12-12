@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * Execute the commands which are send from the Arduino-Simulator
  */
@@ -50,12 +52,12 @@ class CommandHandler {
     protected:
       void gpioPinMode(HardwareService &service){
         pin_size_t pinNumber = service.receivePin();
-        PinMode pinModeValue = service.receiveInt();
+        PinMode pinModeValue = (PinMode) service.receive8();
 
         pinMode(pinNumber, pinModeValue);
 
         char msg[80];
-        sprintf(msg,"pinMode(%d,%d)",pinNumber,pinModeValue);
+        sprintf(msg,"pinMode(%hhu,%d)",pinNumber,pinModeValue);
         Logger.log(Info,msg);
         
       }
@@ -66,7 +68,7 @@ class CommandHandler {
         digitalWrite(pinNumber, status);
         
         char msg[80];
-        sprintf(msg,"digitalWrite(%d,%d)",pinNumber,status);
+        sprintf(msg,"digitalWrite(%u,%u)",pinNumber, status);
         Logger.log(Info,msg);
         
       }
@@ -74,11 +76,13 @@ class CommandHandler {
       void gpioDigitalRead(HardwareService &service){
         pin_size_t pinNumber = service.receivePin();
         uint8_t status = digitalRead(pinNumber);
-        service.send(status);
 
         char msg[80];
-        sprintf(msg,"digitalRead(%d)",pinNumber);
+        sprintf(msg,"digitalRead(%d) -> %d",pinNumber, status);
         Logger.log(Info,msg);
+
+        service.send(status);
+        service.flush();
    
       }
   

@@ -11,8 +11,8 @@
 #include "CommandHandler.h"
 
 
-const char* wifi_ssid = "Your SSID";
-const char* wifi_pwd = "Your Password";
+const char* wifi_ssid = "Phil Schatzmann";
+const char* wifi_pwd = "sabrina01";
 const char* udpAddress = "192.168.255.255"; // we use a broadcast address
 const int udpPort = 7000;
 WiFiUDP udp;
@@ -42,7 +42,7 @@ void setupConnection() {
     while(true) {
       Logger.log(Info,"Waiting for hallo from remote Arduino-Emulator");
       udp.beginPacket(udpAddress,udpPort);
-      udp.println("Arduino-Emulator");
+      udp.print("Arduino-Emulator");
       udp.endPacket();
       delay(5000);
 
@@ -52,7 +52,7 @@ void setupConnection() {
       if (strcmp(reply,"OK")==0){
         Logger.log(Info,"Hallo from Emulator received - ready for commands...");
         break;
-      }
+      } 
     }
 }
 
@@ -62,10 +62,18 @@ void setup() {
     delay(10);
 
     setupWiFi();
-    setupConnection();
+    udp.begin(udpPort);
+    //setupConnection();
 }
 
 
 void loop() {
-    handler.receiveCommand(service);
+    udp.parsePacket();
+    if (udp.available()>0) {
+      handler.receiveCommand(service);
+      // we should not have any unprocessed data;
+      // but we get rid of it....
+      char msg[512];
+      udp.read(msg,512);
+    }
 }
