@@ -26,6 +26,7 @@ enum HWCalls {
     I2cRead,
     I2cPeek,
     SpiTransfer,
+    SpiTransfer8,
     SpiTransfer16,
     SpiUsingInterrupt,
     SpiNotUsingInterrupt,
@@ -45,6 +46,8 @@ enum HWCalls {
     GpioNoTone,
     GpioPulseIn,
     GpioPulseInLong,
+    SerialBegin,
+    SerialEnd,
     SerialWrite,
     SerialRead,
     SerialAvailable,
@@ -188,10 +191,28 @@ class HardwareService {
         return swap_int64(result);
     }
     
-
     size_t receive(void* data, int len){
         return io->readBytes((char*)data,len);
     }
+
+    // provides access to the stream which is used to communicate
+    Stream& stream() {
+      return *io;
+    }
+
+    // copies the data from a source stream to a target stream
+    static size_t copy(Stream &to, Stream& from, size_t len){
+      uint8_t buffer[512];  
+      while(len>0){
+         size_t recLen = len > 512 ? 512 : len;
+         size_t readLen = from.readBytes(buffer, recLen);
+         to.write(buffer,readLen);
+         len -= readLen;
+      }
+      return len;
+    }
+
+    
    
   protected:
     Stream *io;
