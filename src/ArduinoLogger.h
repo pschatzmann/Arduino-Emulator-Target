@@ -5,6 +5,8 @@
  */
 #include <Arduino.h>
 #include <Stream.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 /**
  * @brief Supported log levels.
@@ -42,27 +44,34 @@ class ArduinoLogger {
   virtual bool isLogging() { return log_stream_ptr != nullptr; }
 
   /**
-   * @brief Logs a message if the level passes the configured threshold.
+   * @brief Logs a printf-style formatted message.
    * @param current_level Message severity.
-   * @param str Primary message segment.
-   * @param str1 Optional second segment.
-   * @param str2 Optional third segment.
+   * @param format `printf`-style format string.
+   * @param ... Optional format arguments.
    */
-  virtual void log(LogLevel current_level, const char* str,
-                   const char* str1 = nullptr, const char* str2 = nullptr) {
-    if (log_stream_ptr != nullptr && current_level >= log_level) {
-      log_stream_ptr->print(str);
-      if (str1 != nullptr) {
-        log_stream_ptr->print(" ");
-        log_stream_ptr->print(str1);
-      }
-      if (str2 != nullptr) {
-        log_stream_ptr->print(" ");
-        log_stream_ptr->print(str2);
-      }
-      log_stream_ptr->println();
-      log_stream_ptr->flush();
+  virtual void log(LogLevel current_level, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    vlog(current_level, format, args);
+    va_end(args);
+  }
+
+  /**
+   * @brief Logs a printf-style formatted message from a `va_list`.
+   * @param current_level Message severity.
+   * @param format `printf`-style format string.
+   * @param args Variable argument list.
+   */
+  virtual void vlog(LogLevel current_level, const char* format, va_list args) {
+    if (log_stream_ptr == nullptr || current_level < log_level) {
+      return;
     }
+
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+
+    log_stream_ptr->println(buffer);
+    log_stream_ptr->flush();
   }
 
  protected:
