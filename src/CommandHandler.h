@@ -72,53 +72,6 @@ class CommandHandler {
       }
     }
     switch (cmd) {
-      // I2C
-      case I2cBegin0:
-        i2cBegin0(service);
-        break;
-      case I2cBegin1:
-        i2cBegin1(service);
-        break;
-      case I2cEnd:
-        i2cEnd(service);
-        break;
-      case I2cSetClock:
-        i2cSetClock(service);
-        break;
-      case I2cBeginTransmission:
-        i2cBeginTransmission(service);
-        break;
-      case I2cEndTransmission1:
-        i2cEndTransmission1(service);
-        break;
-      case I2cEndTransmission:
-        i2cEndTransmission(service);
-        break;
-      case I2cRequestFrom3:
-        i2cRequestFrom3(service);
-        break;
-      case I2cRequestFrom2:
-        i2cRequestFrom2(service);
-        break;
-      case I2cOnReceive:
-        i2cOnReceive(service);
-        break;
-      case I2cOnRequest:
-        i2cOnRequest(service);
-        break;
-      case I2cWrite:
-        i2cWrite(service);
-        break;
-      case I2cAvailable:
-        i2cAvailable(service);
-        break;
-      case I2cRead:
-        i2cRead(service);
-        break;
-      case I2cPeek:
-        i2cPeek(service);
-        break;
-
       // GPIO
       case GpioPinMode:
         gpioPinMode(service);
@@ -204,6 +157,53 @@ class CommandHandler {
         break;
       case SerialFlush:
         serialFlush(service);
+        break;
+
+      // I2C
+      case I2cBegin0:
+        i2cBegin0(service);
+        break;
+      case I2cBegin1:
+        i2cBegin1(service);
+        break;
+      case I2cEnd:
+        i2cEnd(service);
+        break;
+      case I2cSetClock:
+        i2cSetClock(service);
+        break;
+      case I2cBeginTransmission:
+        i2cBeginTransmission(service);
+        break;
+      case I2cEndTransmission1:
+        i2cEndTransmission1(service);
+        break;
+      case I2cEndTransmission:
+        i2cEndTransmission(service);
+        break;
+      case I2cRequestFrom3:
+        i2cRequestFrom3(service);
+        break;
+      case I2cRequestFrom2:
+        i2cRequestFrom2(service);
+        break;
+      case I2cOnReceive:
+        i2cOnReceive(service);
+        break;
+      case I2cOnRequest:
+        i2cOnRequest(service);
+        break;
+      case I2cWrite:
+        i2cWrite(service);
+        break;
+      case I2cAvailable:
+        i2cAvailable(service);
+        break;
+      case I2cRead:
+        i2cRead(service);
+        break;
+      case I2cPeek:
+        i2cPeek(service);
         break;
 
       default: {
