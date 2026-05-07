@@ -2,6 +2,8 @@
 
 Arduino library and example sketch for the [Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator).
 
+The sketch just runs the commands sent from the emulator on the microcontroller.
+
 
 ## Usage
 
