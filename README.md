@@ -2,7 +2,7 @@
 
 Arduino library and example sketch for the [Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator).
 
-The sketch just runs the commands sent from the emulator on the microcontroller.
+The sketch just runs the commands sent vial UDP from the emulator on a ESP32 microcontroller.
 
 
 ## Usage
