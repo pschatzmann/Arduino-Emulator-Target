@@ -1,0 +1,7 @@
+ArduinoLogger	KEYWORD1
+HardwareService	KEYWORD1
+CommandHandler	KEYWORD1
+
+setLogger	KEYWORD2
+log	KEYWORD2
+receiveCommand	KEYWORD2
