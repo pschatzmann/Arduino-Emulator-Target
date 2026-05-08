@@ -4,6 +4,8 @@ Arduino library and example sketch for the [Arduino-Emulator](https://github.com
 
 The sketch just runs the commands sent vial UDP from the emulator on a ESP32 microcontroller.
 
+Please note that this library is a POC and has not been extensively tested.
+
 
 ## Usage
 
