@@ -1,4 +1,4 @@
-ArduinoLogger	KEYWORD1
+EmulatorLogger	KEYWORD1
 HardwareService	KEYWORD1
 CommandHandler	KEYWORD1
 

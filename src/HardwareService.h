@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "ArduinoLogger.h"
+#include "EmulatorLogger.h"
 #include "Stream.h"
 
 /**
@@ -182,7 +182,7 @@ class HardwareService {
     uint16_t result;
     size_t len = io->readBytes((char*)&result, sizeof(uint16_t));
     if (len != sizeof(uint16_t) && len != 0) {
-      Logger.log(Error, "receiveCmd Could not read all data");
+      EmulatorLogger.log(Error, "receiveCmd Could not read all data");
     }
 
     return (HWCalls)swap_uint16(result);

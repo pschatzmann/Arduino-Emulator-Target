@@ -34,7 +34,7 @@ void setupWiFi() {
 
 void setup() {
   Serial.begin(115200);
-  Logger.setLogger(Serial, Info);
+  EmulatorLogger.setLogger(Serial, Info);
   delay(10);
 
   setupWiFi();

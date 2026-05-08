@@ -8,7 +8,7 @@
 #include <SPI.h>
 #include <Wire.h>
 
-#include "ArduinoLogger.h"
+#include "EmulatorLogger.h"
 #include "HardwareService.h"
 
 /** @brief Pin number type used by the command protocol. */
@@ -207,7 +207,7 @@ class CommandHandler {
         break;
 
       default: {
-        Logger.log(Error, "Command not implemented: %d", (int)cmd);
+        EmulatorLogger.log(Error, "Command not implemented: %d", (int)cmd);
         break;
       }
     }
@@ -225,7 +225,7 @@ class CommandHandler {
 
     pinMode(pinNumber, pinModeValue);
 
-    Logger.log(Info, "pinMode(%hhu,%d)", pinNumber, pinModeValue);
+    EmulatorLogger.log(Info, "pinMode(%hhu,%d)", pinNumber, pinModeValue);
   }
 
   void gpioDigitalWrite(HardwareService& service) {
@@ -233,14 +233,14 @@ class CommandHandler {
     uint8_t status = service.receive8();
     digitalWrite(pinNumber, status);
 
-    Logger.log(Info, "digitalWrite(%u,%u)", pinNumber, status);
+    EmulatorLogger.log(Info, "digitalWrite(%u,%u)", pinNumber, status);
   }
 
   void gpioDigitalRead(HardwareService& service) {
     pin_size_t pinNumber = service.receivePin();
     uint8_t status = digitalRead(pinNumber);
 
-    Logger.log(Info, "digitalRead(%d) -> %d", pinNumber, status);
+    EmulatorLogger.log(Info, "digitalRead(%d) -> %d", pinNumber, status);
 
     service.send(status);
     service.flush();
@@ -252,30 +252,30 @@ class CommandHandler {
     int32_t value = analogRead(pinNumber);
     service.send((int32_t)value);
 
-    Logger.log(Info, "analogRead(%d)", pinNumber);
+    EmulatorLogger.log(Info, "analogRead(%d)", pinNumber);
   }
 
   void gpioAnalogReference(HardwareService& service) {
     (void)service.receive8();
-    Logger.log(Error, "gpioAnalogReference not supported");
+    EmulatorLogger.log(Error, "gpioAnalogReference not supported");
   }
 
   void gpioAnalogWrite(HardwareService& service) {
     (void)service.receivePin();
     (void)service.receiveInt();
-    Logger.log(Error, "gpioAnalogWrite not supported");
+    EmulatorLogger.log(Error, "gpioAnalogWrite not supported");
   }
 
   void gpioTone(HardwareService& service) {
     (void)service.receivePin();
     (void)service.receive32();
     (void)service.receive64();
-    Logger.log(Error, "gpioTone not supported");
+    EmulatorLogger.log(Error, "gpioTone not supported");
   }
 
   void gpioNoTone(HardwareService& service) {
     (void)service.receivePin();
-    Logger.log(Error, "gpioNoTone not supported");
+    EmulatorLogger.log(Error, "gpioNoTone not supported");
   }
 
   void gpioPulseIn(HardwareService& service) {
@@ -284,7 +284,7 @@ class CommandHandler {
     unsigned long timeout = (unsigned long)service.receive64();
     (void)pulseIn(pinNumber, state, timeout);
 
-    Logger.log(Info, "pulseIn(%d,%d,%lu)", pinNumber, state, timeout);
+    EmulatorLogger.log(Info, "pulseIn(%d,%d,%lu)", pinNumber, state, timeout);
   }
 
   void gpioPulseInLong(HardwareService& service) {
@@ -293,7 +293,7 @@ class CommandHandler {
     unsigned long timeout = (unsigned long)service.receive64();
     (void)pulseInLong(pinNumber, state, timeout);
 
-    Logger.log(Info, "pulseInLong(%d,%d,%lu)", pinNumber, state, timeout);
+    EmulatorLogger.log(Info, "pulseInLong(%d,%d,%lu)", pinNumber, state, timeout);
   }
 
   void spiTransfer(HardwareService& service) {
@@ -323,12 +323,12 @@ class CommandHandler {
 
   void spiUsingInterrupt(HardwareService& service) {
     (void)service.receive64();
-    Logger.log(Error, "usingInterrupt not supported");
+    EmulatorLogger.log(Error, "usingInterrupt not supported");
   }
 
   void spiNotUsingInterrupt(HardwareService& service) {
     (void)service.receive64();
-    Logger.log(Error, "notUsingInterrupt not supported");
+    EmulatorLogger.log(Error, "notUsingInterrupt not supported");
   }
 
   void spiBeginTransaction(HardwareService& service) {
@@ -342,11 +342,11 @@ class CommandHandler {
   void spiEndTransaction(HardwareService&) { SPI.endTransaction(); }
 
   void spiAttachInterrupt(HardwareService&) {
-    Logger.log(Error, "attachInterrupt not supported");
+    EmulatorLogger.log(Error, "attachInterrupt not supported");
   }
 
   void spiDetachInterrupt(HardwareService&) {
-    Logger.log(Error, "detachInterrupt not supported");
+    EmulatorLogger.log(Error, "detachInterrupt not supported");
   }
 
   void spiBegin(HardwareService&) { SPI.begin(); }
@@ -514,11 +514,11 @@ class CommandHandler {
   }
 
   void i2cOnReceive(HardwareService&) {
-    Logger.log(Error, "i2cOnReceive remote callback not supported");
+    EmulatorLogger.log(Error, "i2cOnReceive remote callback not supported");
   }
 
   void i2cOnRequest(HardwareService&) {
-    Logger.log(Error, "i2cOnRequest remote callback not supported");
+    EmulatorLogger.log(Error, "i2cOnRequest remote callback not supported");
   }
 
   void i2cWrite(HardwareService& service) {

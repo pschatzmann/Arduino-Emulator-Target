@@ -13,26 +13,26 @@
  *
  * Messages are emitted when `current_level >= configured_level`.
  */
-enum LogLevel { Debug, Info, Warning, Error };
+enum EmulatorLogLevel { Debug, Info, Warning, Error };
 
 /**
  * @brief Lightweight logger writing to an Arduino `Stream`.
  *
  * The logger is disabled until `setLogger()` is called.
  */
-class ArduinoLogger {
+class EmulatorLoggerClass {
  public:
   /** @brief Constructs a logger in disabled state. */
-  ArduinoLogger() : log_stream_ptr(nullptr), log_level(Error) {}
+  EmulatorLoggerClass() : log_stream_ptr(nullptr), log_level(Error) {}
   /** @brief Virtual destructor. */
-  ~ArduinoLogger() {}
+  ~EmulatorLoggerClass() {}
 
   /**
    * @brief Activates logging output.
    * @param out Target stream (e.g. `Serial`).
    * @param level Minimum level to emit.
    */
-  virtual void setLogger(Stream& out, LogLevel level = Error) {
+  virtual void setLogger(Stream& out, EmulatorLogLevel level = Error) {
     this->log_stream_ptr = &out;
     this->log_level = level;
   }
@@ -49,7 +49,7 @@ class ArduinoLogger {
    * @param format `printf`-style format string.
    * @param ... Optional format arguments.
    */
-  virtual void log(LogLevel current_level, const char* format, ...) {
+  virtual void log(EmulatorLogLevel current_level, const char* format, ...) {
     va_list args;
     va_start(args, format);
     vlog(current_level, format, args);
@@ -62,7 +62,7 @@ class ArduinoLogger {
    * @param format `printf`-style format string.
    * @param args Variable argument list.
    */
-  virtual void vlog(LogLevel current_level, const char* format, va_list args) {
+  virtual void vlog(EmulatorLogLevel current_level, const char* format, va_list args) {
     if (log_stream_ptr == nullptr || current_level < log_level) {
       return;
     }
@@ -78,8 +78,8 @@ class ArduinoLogger {
   /** @brief Output stream used for logging, or `nullptr` if disabled. */
   Stream* log_stream_ptr;
   /** @brief Minimum enabled log level. */
-  LogLevel log_level;
+  EmulatorLogLevel log_level;
 };
 
 /** @brief Global logger instance used throughout the library. */
-static ArduinoLogger Logger;
+static EmulatorLoggerClass EmulatorLogger;
