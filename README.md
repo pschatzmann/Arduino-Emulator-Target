@@ -1,5 +1,8 @@
 # Arduino-Emulator-Target
 
+[![Arduino Library](https://img.shields.io/badge/Arduino-Library-blue.svg)](https://www.arduino.cc/reference/en/libraries/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Arduino library and example sketch for the [Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator).
 
 The sketch just runs the commands sent vial UDP from the emulator on a ESP32 microcontroller.
